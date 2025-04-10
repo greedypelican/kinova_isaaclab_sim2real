@@ -20,8 +20,8 @@ class Gen3ReachPolicy(PolicyController):
         # Load the pre-trained policy model and environment configuration
         # YOU NEED TO CHANGE THE PATH
         self.load_policy(
-            "/PATH/TO/pretrained_models/reach/policy.pt",
-            "/PATH/TO/pretrained_models/reach/env.yaml",
+            "/home/louis/Documents/MyProjects/my_repo/kinova_isaaclab_sim2real/pretrained_models/reach/policy.pt",
+            "/home/louis/Documents/MyProjects/my_repo/kinova_isaaclab_sim2real/pretrained_models/reach/env.yaml",
         )
 
         self._action_scale = 0.5
@@ -86,17 +86,17 @@ class Gen3ReachPolicy(PolicyController):
             self._previous_action = self.action.copy()
 
             # Debug Logging (commented out)
-            # print("\n=== Policy Step ===")
-            # print(f"{'Command:':<20} {np.round(command, 4)}\n")
-            # print("--- Observation ---")
-            # print(f"{'Δ Joint Positions:':<20} {np.round(obs[:6], 4)}")
-            # print(f"{'Joint Velocities:':<20} {np.round(obs[6:12], 4)}")
-            # print(f"{'Command:':<20} {np.round(obs[12:19], 4)}")
-            # print(f"{'Previous Action:':<20} {np.round(obs[19:25], 4)}\n")
-            # print("--- Action ---")
-            # print(f"{'Raw Action:':<20} {np.round(self.action, 4)}")
-            # processed_action = self.default_pos + (self.action * self._action_scale)
-            # print(f"{'Processed Action:':<20} {np.round(processed_action, 4)}")
+            print("\n=== Policy Step ===")
+            print(f"{'Command:':<20} {np.round(command, 4)}\n")
+            print("--- Observation ---")
+            print(f"{'Δ Joint Positions:':<20} {np.round(obs[:6], 4)}")
+            print(f"{'Joint Velocities:':<20} {np.round(obs[6:12], 4)}")
+            print(f"{'Command:':<20} {np.round(obs[12:19], 4)}")
+            print(f"{'Previous Action:':<20} {np.round(obs[19:25], 4)}\n")
+            print("--- Action ---")
+            print(f"{'Raw Action:':<20} {np.round(self.action, 4)}")
+            processed_action = self.default_pos + (self.action * self._action_scale)
+            print(f"{'Processed Action:':<20} {np.round(processed_action, 4)}")
 
         joint_positions = self.default_pos + (self.action * self._action_scale)
         self._policy_counter += 1

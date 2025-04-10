@@ -37,6 +37,14 @@ class ReachPolicy(Node):
     # ROS topics and joint names
     STATE_TOPIC = '/joint_trajectory_controller/state'
     CMD_TOPIC = '/joint_trajectory_controller/joint_trajectory'
+
+    # ros2 topic pub /joint_trajectory_controller/joint_trajectory trajectory_msgs/JointTrajectory "{
+    #     joint_names: [joint_1, joint_2, joint_3, joint_4, joint_5, joint_6, joint_7],
+    #     points: [
+    #         { positions: [0, 0, 0, 0, 0, 0, 0], time_from_start: { sec: 10 } },
+    #     ]
+    # }" -1
+
     JOINT_NAMES = [
         'joint_1',
         'joint_2',
@@ -49,9 +57,9 @@ class ReachPolicy(Node):
     
     # Mapping from joint name to simulation action index
     JOINT_NAME_TO_IDX = {
-        'joint_1': 2,
+        'joint_1': 0,
         'joint_2': 1,
-        'joint_3': 0,
+        'joint_3': 2,
         'joint_4': 3,
         'joint_5': 4,
         'joint_6': 5,
@@ -146,39 +154,13 @@ class ReachPolicy(Node):
             if len(joint_pos) != 7:
                 raise Exception(f"Expected 7 joint positions, got {len(joint_pos)}!")
             
-            target_pos = [0] * 7
-            # for i, pos in enumerate(joint_pos):
-                # Skip gripper joints for this task (assuming index 5 is gripper)
-                # if i == 5:
-                #     continue
-                # target_pos[i] = self.map_joint_angle(pos, i)
-            self.target_pos = target_pos
-            
-            # Ensure both current and target positions are available before publishing
-            if self.current_pos is None or self.target_pos is None:
-                return
-            
             traj = JointTrajectory()
             traj.joint_names = self.JOINT_NAMES
+
             point = JointTrajectoryPoint()
-            dur_list = []
-            # The moving_average factor here is set to 1, meaning full target command is used.
-            moving_average = 1  
-            
-            for joint_name in traj.joint_names:
-                pos = self.current_pos[joint_name]
-                target = self.target_pos[self.JOINT_NAME_TO_IDX[joint_name]]
-                # Compute the command using a weighted average (with weight = 1, it equals the target)
-                cmd = pos * (1 - moving_average) + target * moving_average
-                max_vel = 0.7  # maximum velocity (units per second)
-                duration = abs(cmd - pos) / max_vel if max_vel else self.min_traj_dur
-                dur_list.append(max(duration, self.min_traj_dur))
-                point.positions.append(cmd)
-            
-            max_duration = max(dur_list) if dur_list else 0.0
-            sec = int(max_duration)
-            nanosec = int((max_duration - sec) * 1e9)
-            point.time_from_start = Duration(sec=sec, nanosec=nanosec)
+            point.positions = joint_pos.tolist()
+            point.time_from_start = Duration(sec=1, nanosec=0)  # Temps pour atteindre la position
+
             traj.points.append(point)
             
             self.pub.publish(traj)
