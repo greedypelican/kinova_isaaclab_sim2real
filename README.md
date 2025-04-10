@@ -63,15 +63,32 @@ This is the **first transfer step** before attempting control in physical or ROS
 
 ## 🤖 Sim2Real Deployment (→ ROS) [WIP]
 
-The Sim2Real pipeline will begin with **standalone ROS control of the end-effector** using the **Reach Task** trained policy, without relying on Isaac Sim or Isaac Lab.
+The Sim2Real pipeline focuses on deploying trained reinforcement learning policies directly onto the **real Kinova Gen3 robot** using a minimal **ROS2-based interface**, with no dependency on Isaac Lab or Isaac Sim at runtime.
 
-🔧 Initial phase:
-- Create a lightweight ROS node that loads the trained model  
-- Infer target end-effector positions in real-time  
-- Send Cartesian or joint commands to the physical Kinova Gen3  
-- Use basic teleop (e.g., keyboard arrows) as fallback/manual control
+You can first try to simulate the Kinova Gen3 in ROS2 using fake hardware mode:
 
-> This approach ensures the runtime system is clean, efficient, and hardware-ready, keeping only the trained model as a dependency.
+```bash
+ros2 launch kortex_bringup gen3.launch.py robot_ip:=yyy.yyy.yyy.yyy use_fake_hardware:=true
+```
+
+To test movement commands, send a simple joint trajectory:
+
+```bash
+ros2 topic pub /joint_trajectory_controller/joint_trajectory trajectory_msgs/JointTrajectory "{
+  joint_names: [joint_1, joint_2, joint_3, joint_4, joint_5, joint_6, joint_7],
+  points: [
+    { positions: [0, 0, 0, 0, 0, 0, 0], time_from_start: { sec: 1 } },
+  ]
+}" -1
+```
+
+Run the Reach Task with the trained policy to go to a certain predefined position:
+
+```bash
+python3 scripts/sim2real/run_task.py
+```
+
+The next step is to connect the same interface to the **real Kinova Gen3** and execute the learned Reach Task in real-world conditions — using the exact same model and runtime logic validated in simulation. **(WIP)**
 
 ---
 
