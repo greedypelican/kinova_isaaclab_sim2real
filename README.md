@@ -1,135 +1,109 @@
-# Template for Isaac Lab Projects
+# 🦾 Kinova Gen3 RL & Sim2Real Toolkit
 
 ## Overview
 
-This project/repository serves as a template for building projects or extensions based on Isaac Lab.
-It allows you to develop in an isolated environment, outside of the core Isaac Lab repository.
+This repository provides a modular framework for training reinforcement learning (RL) agents on the **Kinova Gen3** robot using **Isaac Lab**, and deploying trained models either in **Isaac Sim**, **URSim**, or on the **real robot** via ROS.
 
-**Key Features:**
+Built as a standalone Isaac Lab extension, it allows isolated development.
 
-- `Isolation` Work outside the core Isaac Lab repository, ensuring that your development efforts remain self-contained.
-- `Flexibility` This template is set up to allow your code to be run as an extension in Omniverse.
+**✨ Features**
+- 🧠 Task-specific RL environments for Kinova Gen3  
+- 🎯 Reach task implemented as a starting point  
+- 🧪 Sim2Sim Deployment (→ Isaac Sim) (WIP)
+- 🤖 Sim2Real Deployment (→ ROS) (WIP)
 
-**Keywords:** extension, template, isaaclab
+---
 
-## Installation
+## 🛠️ Installation
 
-- Install Isaac Lab by following the [installation guide](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/index.html).
-  We recommend using the conda installation as it simplifies calling Python scripts from the terminal.
+1. Install Isaac Lab by following the official [installation guide](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/index.html) (conda recommended).  
+2. Clone this repo **outside** the `IsaacLab` directory.  
+3. Install in editable mode:
 
-- Clone or copy this project/repository separately from the Isaac Lab installation (i.e. outside the `IsaacLab` directory):
+```bash
+python -m pip install -e source/gen3
+```
 
-- Using a python interpreter that has Isaac Lab installed, install the library in editable mode using:
+---
 
-    ```bash
-    # use 'PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-    python -m pip install -e source/gen3
+## 🚀 Training & Basic Testing
 
-- Verify that the extension is correctly installed by:
+You can train a policy on the Kinova Gen3 **Reach Task** using your preferred RL library:
 
-    - Listing the available tasks:
+```bash
+python scripts/rsl_rl/train.py --task Gen3-Reach-v0
+```
 
-        Note: It the task name changes, it may be necessary to update the search pattern `"Template-"`
-        (in the `scripts/list_envs.py` file) so that it can be listed.
+After training, a quick way to validate the behavior is to use `play.py`:
 
-        ```bash
-        # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-        python scripts/list_envs.py
-        ```
+```bash
+python scripts/rsl_rl/play.py --task Gen3-Reach-v0 --checkpoint <path_to_checkpoint>
+```
 
-    - Running a task:
+This helps confirm that the learned policy performs as expected in **Isaac Lab** before attempting transfer.
 
-        ```bash
-        # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-        python scripts/<RL_LIBRARY>/train.py --task=<TASK_NAME>
-        ```
+---
 
-    - Running a task with dummy agents:
+## 🧪 Sim2Sim Deployment (→ Isaac Sim) [WIP]
 
-        These include dummy agents that output zero or random agents. They are useful to ensure that the environments are configured correctly.
+To decouple from Isaac Lab, a **standalone policy runner script** will be provided to load and run the trained model directly in **Isaac Sim**, using only the USD environment and model weights.
 
-        - Zero-action agent
+🎯 Goals:
+- Run policy inference using Isaac Sim without Isaac Lab dependencies  
+- Use the same `.usd` and neural policy exported during training
 
-            ```bash
-            # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-            python scripts/zero_agent.py --task=<TASK_NAME>
-            ```
-        - Random-action agent
+This is the **first transfer step** before attempting control in physical or ROS-based environments.
 
-            ```bash
-            # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-            python scripts/random_agent.py --task=<TASK_NAME>
-            ```
+---
 
-### Set up IDE (Optional)
+## 🤖 Sim2Real Deployment (→ ROS) [WIP]
 
-To setup the IDE, please follow these instructions:
+The Sim2Real pipeline will begin with **standalone ROS control of the end-effector** using the **Reach Task** trained policy, without relying on Isaac Sim or Isaac Lab.
 
-- Run VSCode Tasks, by pressing `Ctrl+Shift+P`, selecting `Tasks: Run Task` and running the `setup_python_env` in the drop down menu.
-  When running this task, you will be prompted to add the absolute path to your Isaac Sim installation.
+🔧 Initial phase:
+- Create a lightweight ROS node that loads the trained model  
+- Infer target end-effector positions in real-time  
+- Send Cartesian or joint commands to the physical Kinova Gen3  
+- Use basic teleop (e.g., keyboard arrows) as fallback/manual control
 
-If everything executes correctly, it should create a file .python.env in the `.vscode` directory.
-The file contains the python paths to all the extensions provided by Isaac Sim and Omniverse.
-This helps in indexing all the python modules for intelligent suggestions while writing code.
+> This approach ensures the runtime system is clean, efficient, and hardware-ready, keeping only the trained model as a dependency.
 
-### Setup as Omniverse Extension (Optional)
+---
 
-We provide an example UI extension that will load upon enabling your extension defined in `source/gen3/gen3/ui_extension_example.py`.
-
-To enable your extension, follow these steps:
-
-1. **Add the search path of this project/repository** to the extension manager:
-    - Navigate to the extension manager using `Window` -> `Extensions`.
-    - Click on the **Hamburger Icon**, then go to `Settings`.
-    - In the `Extension Search Paths`, enter the absolute path to the `source` directory of this project/repository.
-    - If not already present, in the `Extension Search Paths`, enter the path that leads to Isaac Lab's extension directory directory (`IsaacLab/source`)
-    - Click on the **Hamburger Icon**, then click `Refresh`.
-
-2. **Search and enable your extension**:
-    - Find your extension under the `Third Party` category.
-    - Toggle it to enable your extension.
-
-## Code formatting
-
-We have a pre-commit template to automatically format your code.
-To install pre-commit:
+## 🧹 Code Formatting
 
 ```bash
 pip install pre-commit
-```
-
-Then you can run pre-commit with:
-
-```bash
 pre-commit run --all-files
 ```
 
-## Troubleshooting
+---
 
-### Pylance Missing Indexing of Extensions
+## 🐛 Troubleshooting
 
-In some VsCode versions, the indexing of part of the extensions is missing.
-In this case, add the path to your extension in `.vscode/settings.json` under the key `"python.analysis.extraPaths"`.
-
-```json
-{
-    "python.analysis.extraPaths": [
-        "<path-to-ext-repo>/source/gen3"
-    ]
-}
-```
-
-### Pylance Crash
-
-If you encounter a crash in `pylance`, it is probable that too many files are indexed and you run out of memory.
-A possible solution is to exclude some of omniverse packages that are not used in your project.
-To do so, modify `.vscode/settings.json` and comment out packages under the key `"python.analysis.extraPaths"`
-Some examples of packages that can likely be excluded are:
+**Missing IntelliSense / Pylance Indexing:**
 
 ```json
-"<path-to-isaac-sim>/extscache/omni.anim.*"         // Animation packages
-"<path-to-isaac-sim>/extscache/omni.kit.*"          // Kit UI tools
-"<path-to-isaac-sim>/extscache/omni.graph.*"        // Graph UI tools
-"<path-to-isaac-sim>/extscache/omni.services.*"     // Services tools
-...
+"python.analysis.extraPaths": [
+    "<path-to-repo>/source/gen3"
+]
 ```
+
+**Pylance Crashing?** Exclude unused extensions in `.vscode/settings.json`:
+
+```json
+"<path-to-isaac-sim>/extscache/omni.anim.*",
+"<path-to-isaac-sim>/extscache/omni.services.*"
+```
+
+---
+
+## 🌟 Acknowledgements
+
+NEED TO DO
+
+- IsaacLab dev
+- Johnsun
+- repo de johnsun
+- Kinova dev
+- Labo Init
