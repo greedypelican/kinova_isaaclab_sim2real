@@ -42,6 +42,11 @@ python scripts/rsl_rl/play.py --task Gen3-Reach-v0 --checkpoint <path_to_checkpo
 
 This helps confirm that the learned policy performs as expected in **Isaac Lab** before attempting transfer.
 
+<video width="600" controls>
+  <source src="medias/training.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ---
 
 ## 🧪 Sim2Sim Deployment (→ Isaac Sim) [WIP]
