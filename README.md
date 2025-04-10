@@ -28,7 +28,7 @@ python -m pip install -e source/gen3
 
 ## 🚀 Training & Basic Testing
 
-You can train a policy on the Kinova Gen3 **Reach Task** using your preferred RL library:
+You can train a policy on the Kinova Gen3 **Reach Task** using either rsl_rl or rl_games library:
 
 ```bash
 python scripts/rsl_rl/train.py --task Gen3-Reach-v0
