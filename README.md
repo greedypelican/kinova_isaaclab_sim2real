@@ -6,6 +6,11 @@ This repository provides a modular framework for training reinforcement learning
 
 Built as a standalone Isaac Lab extension, it allows isolated development.
 
+> ⚠️ **Note**  
+>
+> This Sim2Real pipeline runs entirely with **ROS2** and does **not require Isaac Lab or Isaac Sim** to be installed. And for convenience, **pre-trained models are provided** so you can get started immediately without retraining.
+
+
 **✨ Features**
 - 🧠 Task-specific RL environments for Kinova Gen3  
 - 🎯 Reach task implemented as a starting point  
