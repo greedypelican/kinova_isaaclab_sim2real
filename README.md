@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository provides a modular framework for training reinforcement learning (RL) agents on the **Kinova Gen3** robot using **Isaac Lab**, and deploying trained models either in **Isaac Sim**, **URSim**, or on the **real robot** via ROS.
+This repository provides a modular framework for training reinforcement learning (RL) agents on the **Kinova Gen3** robot using **Isaac Lab**, and deploying trained models either in **Isaac Sim**, or on the **real robot** via ROS.
 
 Built as a standalone Isaac Lab extension, it allows isolated development.
 
