@@ -1,6 +1,25 @@
-import numpy as np
-from controllers.policy_controller import PolicyController
+#!/usr/bin/env python3
+"""
+gen3.py
+--------------------
 
+Thin wrapper around a pre-trained reach policy for the Kinova Gen3 arm.
+Extends `PolicyController` with:
+
+* State update via `update_joint_state()`
+* Forward pass (`forward`) that returns a target joint-position command
+  every call, computing a new action every ``decimation`` steps.
+
+Change the default paths below or pass them explicitly in the constructor.
+
+Author: Louis Le Lay
+"""
+
+from pathlib import Path
+
+import numpy as np
+
+from controllers.policy_controller import PolicyController
 
 class Gen3ReachPolicy(PolicyController):
     """Policy controller for Gen3 Reach using a pre-trained policy model."""
@@ -18,10 +37,11 @@ class Gen3ReachPolicy(PolicyController):
             "joint_7",
         ]
         # Load the pre-trained policy model and environment configuration
-        # YOU NEED TO CHANGE THE PATH
+        repo_root = Path(__file__).resolve().parents[3]
+        model_dir = repo_root / "pretrained_models" / "reach"
         self.load_policy(
-            "/home/louis/Documents/MyProjects/my_repo/kinova_isaaclab_sim2real/pretrained_models/reach/policy.pt",
-            "/home/louis/Documents/MyProjects/my_repo/kinova_isaaclab_sim2real/pretrained_models/reach/env.yaml",
+            model_dir / "policy.pt",
+            model_dir / "env.yaml",
         )
 
         self._action_scale = 0.5

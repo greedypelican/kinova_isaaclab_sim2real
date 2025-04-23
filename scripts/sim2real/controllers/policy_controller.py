@@ -1,22 +1,50 @@
+#!/usr/bin/env python3
+"""
+policy_controller.py
+--------------------
+
+Minimal wrapper to load a TorchScript policy and expose helpers to:
+
+* build observations  – implemented in subclasses
+* compute actions     – via `_compute_action()`
+
+The class also extracts physics and robot-joint parameters from the
+`env.yaml` that accompanies each policy.
+
+Sub-classes must set `self.dof_names` before calling `load_policy`
+(in `__init__`) and implement:
+
+* `_compute_observation()`
+* `forward()`
+
+Author: Louis Le Lay
+"""
+
 import io
-from typing import Optional
+
 import numpy as np
 import torch
 
 from utils.config_loader import parse_env_config, get_physics_properties, get_robot_joint_properties
 
 class PolicyController:
-    """
-    A controller that loads and executes a policy from a file.
-    """
+    """A controller that loads and executes a policy from a file."""
 
     def __init__(self) -> None:
         pass
 
     def load_policy(self, policy_file_path, policy_env_path) -> None:
         """
-        Loads policy from a file.
+        Load a TorchScript *policy* plus its environment metadata.
+
+        Parameters
+        ----------
+        model_path : str | Path
+            Path to a ``.pt`` / ``.pth`` TorchScript file.
+        env_path   : str | Path
+            Path to the corresponding ``env.yaml``.
         """
+
         print("\n=== Policy Loading ===")
         print(f"{'Model path:':<18} {policy_file_path}")
         print(f"{'Environment path:':<18} {policy_env_path}")
@@ -65,18 +93,15 @@ class PolicyController:
         return action
 
     def _compute_observation(self) -> NotImplementedError:
-        """
-        Computes the observation. Not implemented.
-        """
+        """Build an observation, must be overridden."""
 
         raise NotImplementedError(
             "Compute observation need to be implemented, expects np.ndarray in the structure specified by env yaml"
         )
 
     def forward(self) -> NotImplementedError:
-        """
-        Forwards the controller. Not implemented.
-        """
+        """Return the next command, must be overridden."""
+
         raise NotImplementedError(
             "Forward needs to be implemented to compute and apply robot control from observations"
         )

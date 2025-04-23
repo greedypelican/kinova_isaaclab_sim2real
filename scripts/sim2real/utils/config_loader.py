@@ -5,15 +5,12 @@
 # and any modifications thereto. Any use, reproduction, disclosure or
 # distribution of this software and related documentation without an express
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
-#
+
 import fnmatch
 import io
-# import sys
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
-# import carb
 import yaml
-import os
 
 def parse_env_config(env_config_path: str = "env.yaml") -> dict:
     """
