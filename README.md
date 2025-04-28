@@ -14,10 +14,8 @@ Built as a standalone Isaac Lab extension, it allows isolated development.
 |---------|------------------|
 | **🛠️ Installation** | How to install Isaac Lab, clone this repo, and install the Python package. |
 | **🚀 Training & Basic Testing** | Commands to train a reach-task policy with `rsl_rl` or `rl_games` and replay it in Isaac Lab. |
-| **🧪 Sim-to-Sim Deployment (Isaac Sim)** *(WIP)* | Plan for running the exported `.usd` scene and `policy.pt` directly in Isaac Sim with zero Isaac Lab dependencies. |
 | **🤖 Sim-to-Real Deployment (ROS 2)** | Step-by-step instructions to test on fake hardware, then execute the exact same policy on the physical Kinova Gen3. |
-| **🌟 Acknowledgements** | Credits to Isaac Lab, Kinova, community contributors, and INIT Lab. |
-
+| **🌟 Acknowledgements** | Credits to Isaac Lab, Kinova, community help, and INIT Lab. |
 
 ## 🛠️ Installation
 
@@ -44,21 +42,6 @@ python scripts/rsl_rl/play.py --task Gen3-Reach-v0
 ```
 
 This helps confirm that the learned policy performs as expected in **Isaac Lab** before attempting transfer.
-
-<video width="600" controls>
-  <source src="medias/training.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-## 🧪 Sim2Sim Deployment (Isaac Sim) [WIP]
-
-To decouple from Isaac Lab, a **standalone policy runner script** will be provided to load and run the trained model directly in **Isaac Sim**, using only the USD environment and model weights.
-
-🎯 Goals:
-- Run policy inference using Isaac Sim without Isaac Lab dependencies  
-- Use the same `.usd` and neural policy exported during training
-
-This is the **first transfer step** before attempting control in physical or ROS-based environments.
 
 ## 🤖 Sim2Real Deployment (ROS2)
 
@@ -93,7 +76,7 @@ python3 scripts/sim2real/run_task_reach.py
 
 The next step is to connect the same interface to the **real Kinova Gen3** and execute the learned Reach Task in real-world conditions — using the exact same model and runtime logic validated in simulation.
 
-For that you'll run::
+For that you'll run:
 
 ```bash
 ros2 launch kortex_bringup gen3_lite.launch.py robot_ip:=192.168.1.10
@@ -115,7 +98,9 @@ Now your robot should be alternating between three positions.
 * Johnson Sun
   * [GitHub profile](https://github.com/j3soon)
   * [UR10 Reacher RL sim2real Isaac Gym env repository](https://github.com/j3soon/OmniIsaacGymEnvs-UR10Reacher) 
-* Kinova Robotics team & the ros2_kortex contributors
+* Kinova Robotics
   * [ros2_kortex repository](https://github.com/Kinovarobotics/ros2_kortex)
 * INIT Lab
   * [Website](https://initrobots.ca/)
+  * David St-Onge
+  * Augustin Nguon
