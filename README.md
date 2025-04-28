@@ -17,6 +17,15 @@ Built as a standalone Isaac Lab extension, it allows isolated development.
 | **🤖 Sim-to-Real Deployment (ROS 2)** | Step-by-step instructions to test on fake hardware, then execute the exact same policy on the physical Kinova Gen3. |
 | **🌟 Acknowledgements** | Credits to Isaac Lab, Kinova, community help, and INIT Lab. |
 
+
+https://github.com/user-attachments/assets/84c2c0b1-0cab-4db9-8d27-ff62f1073828
+
+Click to see Demo on YouTube 👇
+
+[![Watch on YouTube](https://img.youtube.com/vi/5cP7AM1-FTA/hqdefault.jpg)](https://youtu.be/5cP7AM1-FTA)
+
+
+
 ## 🛠️ Installation
 
 1. Install Isaac Lab by following the official [installation guide](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/index.html) (conda recommended).  
