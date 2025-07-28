@@ -16,6 +16,7 @@ Built as a standalone Isaac Lab extension, it allows isolated development.
 | **🚀 Training & Basic Testing** | Commands to train a reach-task policy with `rsl_rl` or `rl_games` and replay it in Isaac Lab. |
 | **🤖 Sim-to-Real Deployment (ROS 2)** | Step-by-step instructions to test on fake hardware, then execute the exact same policy on the physical Kinova Gen3. |
 | **🌟 Acknowledgements** | Credits to Isaac Lab, Kinova, community help, and INIT Lab. |
+| **📚 Citation** | BibTeX citation |
 
 https://github.com/user-attachments/assets/91d013ce-9e2a-422d-8fd5-e08fdd5c9282
 
@@ -106,3 +107,19 @@ Now your robot should be alternating between three positions.
   * [Website](https://initrobots.ca/)
   * David St-Onge
   * Augustin Nguon
+
+## 📚 Citation
+
+If you use this work, please cite it as:
+
+```bibtex
+@software{Le_Lay_Kinova_Gen3_RL_2025,
+  author = {Le Lay, Louis},
+  doi = {https://doi.org/10.5281/zenodo.16530856},
+  license = {MIT},
+  month = jul,
+  title = {Kinova Gen3 RL \& Sim2Real Toolkit},
+  url = {https://github.com/louislelay/kinova_isaaclab_sim2real},
+  version = {v1.0.0},
+  year = {2025}
+}
